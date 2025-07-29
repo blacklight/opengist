@@ -1,3 +1,7 @@
+import * as notebookjs from 'notebookjs';
+import 'highlight.js/styles/github.css';
+
+
 document.querySelectorAll<HTMLElement>('.table-code').forEach((el) => {
     el.addEventListener('click', event => {
         if (event.target && (event.target as HTMLElement).matches('.line-num')) {
@@ -75,5 +79,19 @@ if (document.getElementById('gist').dataset.own) {
     });
 }
 
+// Process Jupyter notebooks
+document.querySelectorAll<HTMLElement>('.jupyter.notebook').forEach((el) => {
+  let notebookContent = el.innerText.trim();
+  try {
+    notebookContent = JSON.parse(notebookContent);
+  } catch (e) {
+    console.error('Failed to parse Jupyter notebook content:', e);
+    return;
+  }
 
+  const notebook = notebookjs.parse(notebookContent, {
+    // Specify options here if needed
+  });
 
+  el.innerHTML = notebook.render().outerHTML;
+});
