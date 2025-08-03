@@ -1,6 +1,4 @@
-import * as notebookjs from 'notebookjs';
-import 'highlight.js/styles/github.css';
-
+import './ipynb';
 
 document.querySelectorAll<HTMLElement>('.table-code').forEach((el) => {
     el.addEventListener('click', event => {
@@ -78,20 +76,3 @@ if (document.getElementById('gist').dataset.own) {
         el.disabled = true;
     });
 }
-
-// Process Jupyter notebooks
-document.querySelectorAll<HTMLElement>('.jupyter.notebook').forEach((el) => {
-  let notebookContent = el.innerText.trim();
-  try {
-    notebookContent = JSON.parse(notebookContent);
-  } catch (e) {
-    console.error('Failed to parse Jupyter notebook content:', e);
-    return;
-  }
-
-  const notebook = notebookjs.parse(notebookContent, {
-    // Specify options here if needed
-  });
-
-  el.innerHTML = notebook.render().outerHTML;
-});
